@@ -22,12 +22,16 @@ use Movie\MovieController;
 Route::namespace('Movie')->group(function(){
     //根据时间倒叙查找电影
     Route::apiResource('getmoviebyltime',GetMovieControllerByLTime::class);
+    
 });
+Route::get('getmovieinfo/{id}',MovieController::class.'@show');
 
 //登录
 Route::apiResource('login',LoginController::class);
 //注册
 Route::apiResource('register',RegisterController::class);
+//文件上传地址
+Route::post('upload','CommentController@upload');
 
 //登录权限
 Route::group(['middleware'=>'checkLogin'],function(){

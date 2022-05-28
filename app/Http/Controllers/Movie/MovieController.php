@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Movie;
 
 use Illuminate\Http\Request;
 use App\Models\Movie;
+use App\Models\Comments;
 use App\Http\Controllers\BaseController;
 
 class MovieController extends BaseController
@@ -76,8 +77,11 @@ class MovieController extends BaseController
         // }
         //
         $data=Movie::find($id);
+        //获取电影评论
+        $comments=Comments::where('movie_id',$id)->get();
+
         if($data){
-            return $this->create($data,'查找成功','200');
+            return $this->create(['movieInfo'=>$data,'Comments'=>$comments],'查找成功','200');
         }else{ 
             return $this->create(null, '未查找到该电影', '400');
         }

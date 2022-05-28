@@ -14,5 +14,8 @@ class Movie extends Model
     public $timestamps = false;
     // protected $timestamps=false;
     // protected $guarded=[];
+    public function getcomments(){
+        return $this->hasMany('App\Models\Comments','movie_id','movie_id');
+    }
 
 }
