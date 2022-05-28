@@ -18,7 +18,7 @@ use Movie\MovieController;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-//电影
+//电影  
 Route::namespace('Movie')->group(function () {
     //根据时间倒叙查找电影
     Route::apiResource('getmoviebyltime', GetMovieControllerByLTime::class);
@@ -32,8 +32,10 @@ Route::apiResource('login', LoginController::class);
 Route::apiResource('register', RegisterController::class);
 //文件上传地址
 Route::post('upload', 'CommonController@upload');
-//获取电影院
+//获取所有电影院
 Route::get('getcinema', 'CinemaController@index');
+//获取电影院信息
+Route::get('getcinemainfo/{id}', HallController::class . '@show');
 
 //登录权限
 Route::group(['middleware' => 'checkLogin'], function () {
