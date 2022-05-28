@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class CommentController extends BaseController
+class CommonController extends BaseController
 {
     //
     public function upload(Request $request)

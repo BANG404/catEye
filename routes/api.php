@@ -19,34 +19,40 @@ use Movie\MovieController;
 //     return $request->user();
 // });
 //电影
-Route::namespace('Movie')->group(function(){
+Route::namespace('Movie')->group(function () {
     //根据时间倒叙查找电影
-    Route::apiResource('getmoviebyltime',GetMovieControllerByLTime::class);
-    
+    Route::apiResource('getmoviebyltime', GetMovieControllerByLTime::class);
 });
-Route::get('getmovieinfo/{id}',MovieController::class.'@show');
+//获取电影信息
+Route::get('getmovieinfo/{id}', MovieController::class . '@show');
 
 //登录
-Route::apiResource('login',LoginController::class);
+Route::apiResource('login', LoginController::class);
 //注册
-Route::apiResource('register',RegisterController::class);
+Route::apiResource('register', RegisterController::class);
 //文件上传地址
-Route::post('upload','CommentController@upload');
+Route::post('upload', 'CommonController@upload');
+//获取电影院
+Route::get('getcinema', 'CinemaController@index');
 
 //登录权限
-Route::group(['middleware'=>'checkLogin'],function(){
+Route::group(['middleware' => 'checkLogin'], function () {
 
-//获取用户信息
-Route::apiResource('user',UserController::class);
+    //获取用户信息
+    Route::apiResource('user', UserController::class);
 
-//登出
-Route::apiResource('logout',LogoutController::class);
-Route::group(['middleware'=>'checkPower'],function(){
-    //电影相关权限
-    Route::apiResource('movie',MovieController::class);
-    Route::put('movie/{id}', 'MovieController@update');
-    Route::delete('movie/{id}', 'MovieController@destroy');
+    //登出
+    Route::apiResource('logout', LogoutController::class);
+    Route::group(['middleware' => 'checkPower'], function () {
+        //电影相关权限
+        Route::apiResource('movie', MovieController::class);
+        Route::put('movie/{id}', 'MovieController@update');
+        Route::delete('movie/{id}', 'MovieController@destroy');
+        //电影评论相关权限
+        Route::apiResource('comments', CommentsController::class);
+        //删除电影评论
+        Route::delete('comments/{id}', 'CommentsController@destroy');
+        // Route::get('comments', 'CommentsController@index');
+
+    });
 });
-});
-
-
