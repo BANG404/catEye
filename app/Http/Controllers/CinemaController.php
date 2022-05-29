@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Cinema;
 use Illuminate\Http\Request;
+use App\Models\Hall;
+use App\Models\Session;
 
 class CinemaController extends BaseController
 {
@@ -20,6 +22,7 @@ class CinemaController extends BaseController
     }
 
 
+
     /**
      * Store a newly created resource in storage.
      *
@@ -33,13 +36,19 @@ class CinemaController extends BaseController
 
     /**
      * Display the specified resource.
-     *
+     * 查找影院的相关信息
      * @param  \App\Models\Cinema  $cinema
      * @return \Illuminate\Http\Response
      */
-    public function show(Cinema $cinema)
+    public function show($id)
     {
-        //
+        //根据影院id查找影厅
+        $cinema=Cinema::find($id);
+        //根据影院id查找影厅
+        $hall=Hall::select('hall_id','name','cinema_id','capacity')->where('cinema_id',$id)->get();
+        //根据影院id查询会话记录
+        $session=Session::select('session_id','hall_id','movie_id','date','startTime','price','remain')->where('cinema_id',$id)->get();
+        return $this->create(['cinema'=>$cinema,'hall'=>$hall,'session'=>$session],'查找成功','200');
     }
 
     /**

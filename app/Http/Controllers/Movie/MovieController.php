@@ -17,7 +17,7 @@ class MovieController extends BaseController
     public function index()
     {
         //
-        return $this->create(Movie::select('movie_id','name','staring','detail')->simplepaginate(5),'查找成功','200');
+        return $this->create(Movie::select('movie_id','name','staring','detail','duration','type','score','picture')->simplepaginate(5),'查找成功','200');
     }
 
     /**

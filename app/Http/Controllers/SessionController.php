@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Hall;
-use App\Models\Cinema;
+use App\Models\Session;
 use Illuminate\Http\Request;
 
-class HallController extends BaseController
+class SessionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +14,17 @@ class HallController extends BaseController
      */
     public function index()
     {
-        //获取所有影厅
-        $hall=Hall::select('hall_id','name','cinema_id','capacity')->get();
-        return $this->create($hall,'查找成功','200');
-        
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -35,27 +41,33 @@ class HallController extends BaseController
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Hall  $hall
+     * @param  \App\Models\Session  $session
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Session $session)
     {
-        //根据电影院id查找影厅
-        $hallbody=Hall::find($id);
-        $hall=Hall::select('hall_id','name','cinema_id','capacity')->where('cinema_id',$id)->get();
-        //获取影厅相关信息
-        $cinemainfo=$hallbody->getcinema;
-        return $this->create(['cinema'=>$cinemainfo,'hall'=>$cinemainfo],'查找成功','200');
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Session  $session
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Session $session)
+    {
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Hall  $hall
+     * @param  \App\Models\Session  $session
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Hall $hall)
+    public function update(Request $request, Session $session)
     {
         //
     }
@@ -63,10 +75,10 @@ class HallController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Hall  $hall
+     * @param  \App\Models\Session  $session
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Hall $hall)
+    public function destroy(Session $session)
     {
         //
     }

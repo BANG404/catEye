@@ -35,21 +35,35 @@ Route::post('upload', 'CommonController@upload');
 //获取所有电影院
 Route::get('getcinema', 'CinemaController@index');
 //获取电影院信息
-Route::get('getcinemainfo/{id}', HallController::class . '@show');
+Route::get('getcinemainfo/{id}', 'CinemaController@show');
+
+//获取影厅信息
+// Route::get('getcinemainfo/{id}', HallController::class . '@show');
 
 //登录权限
 Route::group(['middleware' => 'checkLogin'], function () {
-
-    //获取用户信息
-    Route::apiResource('user', UserController::class);
-
+    //用户相关信息
+    Route::prefix('user')->group(function () {
+        //获取用户信息
+        Route::apiResource('/', UserController::class);
+        //获取用户购票列表
+        Route::get('getorder', 'UserController@order');
+        //删除自己的评论
+        Route::delete('deletecomment/{id}', 'UserController@delComment');
+        //购买电影票
+        Route::post('buyticket', 'TicketController@store');
+    });
+    // //获取用户信息
+    // Route::apiResource('user', UserController::class);
+    // //获取用户购票订单
+    // Route::get('user/order',  UserController::class.'@order');
     //登出
     Route::apiResource('logout', LogoutController::class);
     Route::group(['middleware' => 'checkPower'], function () {
         //电影相关权限
         Route::apiResource('movie', MovieController::class);
-        Route::put('movie/{id}', 'MovieController@update');
-        Route::delete('movie/{id}', 'MovieController@destroy');
+        Route::put('movie/{id}', 'Movie\MovieController@update');
+        Route::delete('movie/{id}', 'Movie\MovieController@destroy');
         //电影评论相关权限
         Route::apiResource('comments', CommentsController::class);
         //删除电影评论

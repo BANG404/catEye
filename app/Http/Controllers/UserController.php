@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Ticket;
+use App\Models\Session;
+use App\Models\Cinema;
+use App\Models\Hall;
+use App\Models\Comments;
 
 class UserController extends BaseController
 {
@@ -29,6 +34,18 @@ class UserController extends BaseController
     {
         $id= $request->session()->get('user');
         $data=User::select('user_id','name','email','headImg')->find($id);
+        if($data){
+            return $this->create($data,'查找成功','200');
+        }else{
+            return $this->create(null,'未查找到','400');
+        }
+    }
+
+    //获取用户购票列表
+    public function order(Request $request){
+        $user= $request->session()->get('user');
+        $id= $user['user_id'];
+        $data=Ticket::select('ticket_id','session_id','hall_id','seat')->where('user_id',$id)->paginate(10);
         if($data){
             return $this->create($data,'查找成功','200');
         }else{
@@ -97,6 +114,25 @@ class UserController extends BaseController
             return $this->create($data,'注销成功','200');
         }else{
             return $this->create([],'账号未查找到','400');
+        }
+    }
+
+    public function delComment(Request $request, $id){
+        //删除评论
+        $data=Comments::find($id);
+        //获取登录用户的id 
+        $user=$request->session()->get('user');
+        $id=$user['user_id'];
+
+        //判断删除的评论是否是登录用户的
+        if($data->user_id!=$id){
+            return $this->create(null,'您没有权限删除该评论','400');
+        }
+        if($data){
+            $data->delete();
+            return $this->create($data,'删除成功','200');
+        }else{
+            return $this->create($data,'该评论不存在','400');
         }
     }
 }

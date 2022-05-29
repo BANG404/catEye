@@ -85,6 +85,10 @@ class CommentsController extends BaseController
     {
         //
         $data=Comments::find($id);
+        //判断删除的评论是否是登录用户的
+        if($data->user_id!=$this->user_id){
+            return $this->create(null,'您没有权限删除该评论','400');
+        }
         if($data){
             $data->delete();
             return $this->create($data,'删除成功','200');
@@ -92,4 +96,5 @@ class CommentsController extends BaseController
             return $this->create($data,'该评论不存在','400');
         }
     }
+    
 }
