@@ -52,6 +52,8 @@ Route::group(['middleware' => 'checkLogin'], function () {
         Route::delete('deletecomment/{id}', 'UserController@delComment');
         //购买电影票
         Route::post('buyticket', 'TicketController@store');
+        //获取单张电影票信息
+        Route::get('getticket/{id}', 'TicketController@show');
     });
     // //获取用户信息
     // Route::apiResource('user', UserController::class);

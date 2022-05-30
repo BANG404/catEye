@@ -7,6 +7,7 @@ use App\Models\Session;
 use App\Models\Cinema;
 use App\Models\Hall;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TicketController extends BaseController
 {
@@ -66,13 +67,44 @@ class TicketController extends BaseController
 
     /**
      * Display the specified resource.
-     *
+     * 查看票的详细信息
      * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Http\Response
      */
-    public function show(Ticket $ticket)
+    public function show(Request $request, $id)
     {
-        //
+        //判断票是否存在
+        $ticket=Ticket::find($id);
+        if(!$ticket){
+            return $this->create(null,'该票不存在','400');
+        }
+        //判断票是否属于当前用户
+        $user= $request->session()->get('user');
+        if($ticket->user_id!=$user['user_id']){
+            return $this->create(null,'该票不属于当前用户','400');
+        }
+        //获取票的详细信息
+        $data=DB::select("SELECT
+        ticket.ticket_id,
+        ticket.seat,
+        `user`.`name` AS username,
+        `user`.headImg AS userheadimg,
+        `session`.date AS sessiondate,
+        `session`.startTime,
+        `session`.price AS price,
+        movie.`name` AS moviename,
+        movie.type as movietype,
+        hall.`name` AS hallname,
+        cinema.`name` AS cinemaname 
+        FROM
+        ticket
+        LEFT JOIN `user` ON ticket.user_id = USER.user_id
+        LEFT JOIN hall ON ticket.hall_id = hall.hall_id
+        LEFT JOIN cinema ON hall.cinema_id = cinema.cinema_id
+        LEFT JOIN `session` ON ticket.session_id = `session`.session_id
+        LEFT JOIN movie ON `session`.movie_id = movie.movie_id
+        WHERE ticket_id =:id",['id'=>$id]);
+        return $this->create($data,'查询成功','200');
     }
 
     /**
