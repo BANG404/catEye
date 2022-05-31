@@ -31,4 +31,10 @@ class CommonController extends BaseController
         }
         return $this->create(null, '上传失败！', '400');
     }
+    //文件下载
+    public function download(Request $request ,$filename){
+        // $file = $request->get('file');
+        $file = 'static/upload/'.$filename;
+        return response()->download($file);
+    }
 }

@@ -32,6 +32,9 @@ Route::apiResource('login', LoginController::class);
 Route::apiResource('register', RegisterController::class);
 //文件上传地址
 Route::post('upload', 'CommonController@upload');
+//文件下载地址
+Route::get('download/{filename}', 'CommonController@download');
+
 //获取所有电影院
 Route::get('getcinema', 'CinemaController@index');
 //获取电影院信息

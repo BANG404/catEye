@@ -20,7 +20,7 @@ class UserController extends BaseController
     public function index()
     {
         //
-        return $this->create(User::select('user_id','name','email','headImg')->simplepaginate(5),'查找成功','200');
+        return $this->create(User::select('user_id','name','email','headImg')->simplepaginate(10),'查找成功','200');
         
     }
 
