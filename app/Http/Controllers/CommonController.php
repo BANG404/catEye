@@ -35,6 +35,11 @@ class CommonController extends BaseController
     public function download(Request $request ,$filename){
         // $file = $request->get('file');
         $file = 'static/upload/'.$filename;
-        return response()->download($file);
+        if(file_exists($file)){
+            return response()->file($file);
+        }else
+        {
+            return $this->create(null, '文件不存在！', '400');
+        }
     }
 }

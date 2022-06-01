@@ -45,7 +45,17 @@ class UserController extends BaseController
     public function order(Request $request){
         $user= $request->session()->get('user');
         $id= $user['user_id'];
-        $data=Ticket::select('ticket_id','session_id','hall_id','seat')->where('user_id',$id)->paginate(10);
+        $data=Ticket::select('ticket_id','ticket.seat',
+        'user.name AS username',
+        'user.headImg AS userheadimg',
+        'session.date AS sessiondate',
+        'session.startTime',
+        'session.price AS price',
+        'movie.name  AS moviename',
+        'movie.type as movietype',
+        'hall.name  AS hallname',
+        'cinema.name  AS cinemaname' )->leftJoin('session','session.session_id','=','ticket.session_id')->leftJoin('movie','movie.movie_id','=','session.movie_id')->leftJoin('hall','hall.hall_id','=','session.hall_id')->leftJoin('cinema','cinema.cinema_id','=','hall.cinema_id')->leftJoin('user','user.user_id','=','ticket.user_id')->where('ticket.user_id','=',$id)->simplepaginate(10);
+        // $data=Ticket::select('ticket_id','session_id','hall_id','seat')->where('user_id',$id)->paginate(10);
         if($data){
             return $this->create($data,'查找成功','200');
         }else{
