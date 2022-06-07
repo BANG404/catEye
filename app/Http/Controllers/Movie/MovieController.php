@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Movie;
 use App\Models\Comments;
 use App\Http\Controllers\BaseController;
+use Illuminate\Support\Facades\DB;
 
 class MovieController extends BaseController
 {
@@ -79,9 +80,10 @@ class MovieController extends BaseController
         $data=Movie::find($id);
         //获取电影评论
         $comments=Comments::where('movie_id',$id)->get();
-
+        //获取播放当前电影的电影院
+        $cinemas=DB::select('SELECT cinema.cinema_id , cinema.`name` AS cinemaname,cinema.address AS cinemaaddress FROM `session` LEFT JOIN cinema ON `session`.cinema_id =cinema.cinema_id WHERE `session`.movie_id=?', [$id]);
         if($data){
-            return $this->create(['movieInfo'=>$data,'Comments'=>$comments],'查找成功','200');
+            return $this->create(['movieInfo'=>$data,'cinemas'=>$cinemas,'Comments'=>$comments],'查找成功','200');
         }else{ 
             return $this->create(null, '未查找到该电影', '400');
         }

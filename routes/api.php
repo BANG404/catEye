@@ -39,6 +39,8 @@ Route::get('download/{filename}', 'CommonController@download');
 Route::get('getcinema', 'CinemaController@index');
 //获取电影院信息
 Route::get('getcinemainfo/{id}', 'CinemaController@show');
+//获取电影院电影信息
+Route::post('getcinemamovie', 'CinemaController@getCinemaMovie');
 
 //获取影厅信息
 // Route::get('getcinemainfo/{id}', HallController::class . '@show');
