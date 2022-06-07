@@ -61,6 +61,9 @@ class TicketController extends BaseController
         $ticket->hall_id=$request->hall_id;
         $ticket->seat=$request->seat;
         $ticket->save();
+        //修改剩余票数
+        $session->remain=$session->remain-1;
+        $session->save();
         return $this->create($ticket,'购买成功','200');
 
     }
