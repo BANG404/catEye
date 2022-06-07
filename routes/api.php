@@ -43,7 +43,7 @@ Route::get('getcinemainfo/{id}', 'CinemaController@show');
 Route::post('getcinemamovie', 'CinemaController@getCinemaMovie');
 
 //获取影厅信息
-// Route::get('getcinemainfo/{id}', HallController::class . '@show');
+Route::post('gethellinfo/{id}', HallController::class . '@show');
 
 //登录权限
 Route::group(['middleware' => 'checkLogin'], function () {
