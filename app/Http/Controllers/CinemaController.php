@@ -65,8 +65,6 @@ class CinemaController extends BaseController
         for($i=0;$i<7;$i++){
             $days[]=date('Y-m-d',strtotime("$today+$i day"));
         }
-
-
         if(!$movie_id){
             $movie_id=Session::select('movie_id')->where('cinema_id',$cinema_id)->first()->movie_id;
         }

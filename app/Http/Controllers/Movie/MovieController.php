@@ -140,4 +140,40 @@ class MovieController extends BaseController
             return $this->create(null,'该电影不存在','400');
         }
     }
+
+    /**
+     * 搜索电影
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        //
+        $data=$request->all();
+        //数据验证
+        $validator=\Validator::make($data,[
+            'name'=>'max:255',
+            'type'=>'max:255',
+            'staring'=>'max:255',
+        ]);
+        if($validator->fails()){
+            return $this->create([],$validator->errors()->first(),'400');
+        }
+        $addData='';
+        if($data['name']!=''){
+            $addData=Movie::where('name','like','%'.$data['name'].'%')->simplepaginate(10);
+        }
+        elseif($data['type']!=''){
+            $addData=Movie::where('type','like','%'.$data['type'].'%')->simplepaginate(10);
+        }
+        elseif($data['staring']!=''){
+            $addData=Movie::where('staring','like','%'.$data['staring'].'%')->simplepaginate(10);
+        }
+        if($addData){
+            return $this->create($addData,'查找成功','200');
+        }else{
+            return $this->create([],'未查找到','400');
+        }
+    }
 }

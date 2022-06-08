@@ -41,9 +41,11 @@ Route::get('getcinema', 'CinemaController@index');
 Route::get('getcinemainfo/{id}', 'CinemaController@show');
 //获取电影院电影信息
 Route::post('getcinemamovie', 'CinemaController@getCinemaMovie');
-
 //获取影厅信息
 Route::post('gethellinfo/{id}', HallController::class . '@show');
+//通过电影名或者电影类别查询电影
+Route::post('getmoviebynameortype', 'Movie\MovieController@search');
+
 
 //登录权限
 Route::group(['middleware' => 'checkLogin'], function () {
