@@ -63,10 +63,13 @@ class CinemaController extends BaseController
         $today=date('Y-m-d');
         $days=[];
         for($i=0;$i<7;$i++){
-            $days[]=date('Y-m-d',strtotime("$today+$i day"));
+            $days[]=date('Y-m-d',strtotime("$today-$i day"));
         }
         if(!$movie_id){
             $movie_id=Session::select('movie_id')->where('cinema_id',$cinema_id)->first()->movie_id;
+            if(!$movie_id){
+                return $this->create(null,'该影院无电影','400');
+            }
         }
         $session=Session::where('cinema_id',$cinema_id)->where('movie_id',$movie_id)->whereIn('date',$days)->get();
         if(count($session)==0){

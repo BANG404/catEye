@@ -78,8 +78,9 @@ class MovieController extends BaseController
         // }
         //
         $data=Movie::find($id);
-        //获取电影评论
-        $comments=Comments::where('movie_id',$id)->get();
+        //获取电影评论及用户信息
+        $comments=DB::select('SELECT comments.*,  `user`.`name`,`user`.headImg FROM comments LEFT JOIN `user` ON comments.user_id=`user`.user_id where comments.movie_id = ?', [$id]);
+        // $comments=Comments::where('movie_id',$id)->get();
         //获取播放当前电影的电影院
         $cinemas=DB::select('SELECT cinema.cinema_id , cinema.`name` AS cinemaname,cinema.address AS cinemaaddress FROM `session` LEFT JOIN cinema ON `session`.cinema_id =cinema.cinema_id WHERE `session`.movie_id=?', [$id]);
         if($data){
@@ -139,6 +140,12 @@ class MovieController extends BaseController
         }else{
             return $this->create(null,'该电影不存在','400');
         }
+    }
+
+    //获取票房最高的电影
+    public function getBoxOffice(){
+        $data=Movie::select('movie_id','name','staring','detail','duration','type','score','picture')->orderBy('boxOfficeUnit','desc')->orderBy('boxOffice','desc')->simplePaginate(10);
+        return $this->create($data,'查找成功','200');
     }
 
     /**

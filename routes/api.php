@@ -34,6 +34,8 @@ Route::apiResource('register', RegisterController::class);
 Route::post('upload', 'CommonController@upload');
 //文件下载地址
 Route::get('download/{filename}', 'CommonController@download');
+//获取高票房电影
+Route::get('getmoviebyboxoffice', 'Movie\MovieController@getBoxOffice');
 
 //获取所有电影院
 Route::get('getcinema', 'CinemaController@index');
