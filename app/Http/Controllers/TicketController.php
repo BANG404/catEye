@@ -101,7 +101,7 @@ class TicketController extends BaseController
         cinema.`name` AS cinemaname 
         FROM
         ticket
-        LEFT JOIN `user` ON ticket.user_id = USER.user_id
+        LEFT JOIN `user` ON ticket.user_id = `user`.user_id
         LEFT JOIN hall ON ticket.hall_id = hall.hall_id
         LEFT JOIN cinema ON hall.cinema_id = cinema.cinema_id
         LEFT JOIN `session` ON ticket.session_id = `session`.session_id
